@@ -1,0 +1,20 @@
+		row_dom += 
+			'<div class="row">
+				<div class="col-lg-3">
+					<p><strong>'+col_name+'</strong></p>
+				</div>
+				<div class="col-lg-3">
+					<label>
+						<input id = "txt_s_'+ip_col[i]+'" type="text" name="ip_text">
+					</label>
+				</div>
+				<div class="col-lg-3">
+					<label>
+						<input id = "txt_n_'+ip_col[i]+'" type="text" name="ip_text">
+					</label>
+				</div>
+				<div class="col-lg-3">
+					<label>
+						<input id = "txt_i_'+ip_col[i]+'" type="text" name="ip_text">
+					</label>
+				</div></div>';

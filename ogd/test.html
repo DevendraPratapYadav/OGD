@@ -1,0 +1,309 @@
+<html>
+  <head>
+
+
+    <style type="text/css">
+      .btn {
+  position: relative;
+
+  display: block;
+  margin: 30px auto;
+  padding: 0;
+
+  overflow: hidden;
+
+  border-width: 0;
+  outline: none;
+  border-radius: 2px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
+  
+  background-color: #FF7D0D;
+  color: #ecf0f1;
+  width:170;
+  height:45;
+  font-size: 18;
+  
+  transition: background-color .3s;
+}
+
+.btn:hover, .btn:focus {
+  background-color: #FF7D0D;
+}
+
+.btn > * {
+  position: relative;
+}
+
+.btn span {
+  display: block;
+  padding: 12px 24px;
+}
+
+.btn:before {
+  content: "";
+  
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  
+  display: block;
+  width: 0;
+  padding-top: 0;
+    
+  border-radius: 100%;
+  
+  background-color: rgba(236, 240, 241, .3);
+  
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.btn:active:before {
+  width: 120%;
+  padding-top: 120%;
+  
+  transition: width .2s ease-out, padding-top .2s ease-out;
+}
+
+/* Styles, not important */
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+    </style>
+    
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart', 'controls']});
+      google.charts.setOnLoadCallback(decideGraphs);
+
+      var chart;
+      var dashboard;
+      var donutRangeSlider;
+      var data2;
+
+
+      function parseData()
+      {
+        // var jsonObj = JSON.parse('[{ "year": "2014","value1": 1, "value2": 10.5},{ "year": "2015","value1": 2, "value2": 20.5},{ "year": "2016","value1": 3, "value2": 1.5}]');
+
+        var jsonObj = JSON.parse('[{ "year": 2014.12,"value1": 1, "value2": 10.5},{ "year": 2015.67,"value1": 2, "value2": 20.5},{ "year": 2016.23,"value1": 3, "value2": 1.5}]');
+
+        var noOfRecords = jsonObj.length;
+
+        data2 = new Array();
+
+        var labels = Object.keys(jsonObj[0]);
+
+        data2.push(labels);
+
+        for (var i = 0; i < noOfRecords; i++) {
+          var newRow = Object.values(jsonObj[i]);
+          data2.push(newRow);
+        };
+
+      }
+
+      function decideGraphs()
+      {
+        parseData();
+        var htmlToInsert='';
+        if(typeof data2[1][0]=='number')
+        {
+          document.getElementById("parent2").innerHTML = htmlToInsert;
+          drawChart();
+        }
+        else if(typeof data2[1][0]=='string')
+        {
+          drawHistoAndPie('PieChart',1);
+          document.getElementById("parent1").innerHTML = htmlToInsert;
+        }
+      }
+
+      function drawChart() {
+
+
+        var data = new google.visualization.arrayToDataTable(data2);
+
+        dashboard = new google.visualization.Dashboard(document.getElementById('dashboard_div'));
+
+        donutRangeSlider = new google.visualization.ControlWrapper({
+          'controlType': 'NumberRangeFilter',
+          'containerId': 'rangeSlider_div',
+          'options': {
+            'filterColumnLabel': 'year'
+          }
+        });
+
+
+        chart = new google.visualization.ChartWrapper({
+          'chartType': 'ColumnChart',
+          'containerId': 'chart_div',
+          'options': {
+            'width': 800,
+            'height': 500,
+            'legend': 'right',
+          'explorer': { 
+            'actions': ['dragToZoom', 'rightClickToReset'],
+            'axis': 'horizontal',
+            'keepInBounds': true,
+            'maxZoomIn': 4.0
+          }
+          }
+        });
+
+        dashboard.bind(donutRangeSlider, chart);
+
+        changeMenu(chart.getChartType());
+
+        dashboard.draw(data);
+
+        // console.log(appropriateDataForHistogram(2,data2));
+        // console.log(chart.getOption('axes'));
+        
+
+      }
+
+      function appropriateDataForHistogram(colNumber,data)
+      {
+        var convertedData = new Array();
+        labelsRow = new Array();
+        labelsRow.push(data[0][0]);
+        labelsRow.push(data[0][colNumber]);
+        convertedData.push(labelsRow);
+        for (var i = 1; i < data.length; i++) {
+          var newRecord = new Array();
+          newRecord.push(data[i][0]);
+          newRecord.push(data[i][colNumber])
+          convertedData.push(newRecord);
+        };
+        return convertedData;
+
+      }
+
+      function changeChartType(chartType)
+      {
+        if(chartType=='Histogram')
+        {
+          var newDataForHistogram = appropriateDataForHistogram(2,data2);
+          chart.setChartType(chartType);
+          donutRangeSlider.setOption('filterColumnLabel','values');
+          dashboard.draw(google.visualization.arrayToDataTable(newDataForHistogram))
+
+        }
+        else if(chartType=='PieChart')
+        {
+          var newDataForHistogram = appropriateDataForHistogram(2,data2);
+          chart.setChartType(chartType);
+          donutRangeSlider.setOption('filterColumnLabel','values');
+          dashboard.draw(google.visualization.arrayToDataTable(newDataForHistogram))
+
+        }
+        else
+        {
+          chart.setChartType(chartType);
+          donutRangeSlider.setOption('filterColumnLabel','year');
+          dashboard.draw(google.visualization.arrayToDataTable(data2));
+          changeMenu(chartType);
+        }
+      }
+
+      function changeMenu(chartType)
+      {
+        if (chartType=='ColumnChart')
+        {var htmlToInsert = '<button class="btn" onclick="changeStack();">Toggle stack</button>';
+        document.getElementById("availableProperties").innerHTML = htmlToInsert;
+        }
+        else
+        {
+          var htmlToInsert = '';
+        document.getElementById("availableProperties").innerHTML = htmlToInsert;
+        }
+      }
+
+      function changeStack()
+      {
+
+          if (chart.getOption('isStacked')==null || chart.getOption('isStacked')==false)
+          {
+            chart.setOption('isStacked', true);
+          }
+          else
+          {
+            chart.setOption('isStacked', false);
+          }
+
+          chart.draw();
+      }
+
+      function drawHistoAndPie(chartType,colNumber)
+      {
+        
+
+        var histoData = appropriateDataForHistogram(colNumber,data2);
+        console.log(histoData);
+        console.log(histoData[0]);
+        var data = new google.visualization.arrayToDataTable(histoData);
+        var chart2;
+        if (chartType=='Histogram')
+        {
+          chart2 = new google.visualization.Histogram(document.getElementById('chart_div_2'));
+        }
+        else if(chartType=='PieChart')
+        {
+          chart2 = new google.visualization.PieChart(document.getElementById('chart_div_2'));
+        }
+        console.log(histoData[0][1]);
+        var options =  {
+            'title': histoData[0][1],
+            'width': 800,
+            'height': 500,
+            'legend': 'right'
+          };
+
+        chart2.draw(data,options);
+      }
+
+    </script>
+  </head>
+  <body>
+
+    <div id="parent1">
+
+    <div id="dashboard_div">
+      <div id="rangeSlider_div"></div>
+      <div id="chart_div"></div>
+    </div>
+
+    <select class="btn" name="Charts" onchange = "changeChartType(this.value);">
+      <option value="ColumnChart">Column</option>
+      <option value="LineChart">Line</option>
+      <option value="AreaChart">Area</option>
+    </select>
+
+    <div id="availableProperties">
+     lol
+  </div>
+     <button onClick = "drawChart();" class="btn">
+      Refresh graph
+     </button>
+
+   </div>
+
+   <div id="parent2">
+
+
+
+     <input src="text" id="col_number_txt" value="1"></input>
+     <div id="histo_div">
+      <div id="chart_div_2"></div>
+    </div>
+    <button onClick="drawHistoAndPie('Histogram',document.getElementById('col_number_txt').value);">Draw Histogram</button>
+    <button onClick="drawHistoAndPie('PieChart',document.getElementById('col_number_txt').value);">Draw Pie Chart</button>
+
+  </div>
+
+  </body>
+</html>
