@@ -1,12 +1,25 @@
 window.onload = function() {
-  populateDatasetList();
+  var jqXHR_Data = $.ajax({
+					type: "POST",
+					url: "http://localhost:5000/getTableNames",
+					async: false,
+					crossDomain: true,
+    				contentType: 'application/json;charset=UTF-8',
+    				success: function(data){
+    					// alert(data);
+    					// console.log(data);
+    					// console.log(data);
+    					var jsData = JSON.parse(data);
+    					// alert(jsData);
+    					// console.log(jsData);
+    					populateDatasetList(jsData['result']);
+    				}
+				});
 };
 
 function loadDataset() {
 	var name = document.getElementById("dataset_name").value;
 
-	// Returns successful data submission message when the entered information is stored in database.
-	// var dataString = name + '&email1=' + email + '&password1=' + password + '&contact1=' + contact;
 	var dataString = name;
 
 	if (name == '') {
@@ -55,7 +68,7 @@ function loadDataset() {
     					// console.log(data);
     					real_order_data = data;	
     					var jsData = JSON.parse(data);
-    					alert(jsData);
+    					// alert(jsData);
 						generateTableNew(jsData,real_order_data);
     				}
 				});
@@ -68,6 +81,7 @@ function loadDataset() {
 var raw_data_glob;
 var data_col_select_glob;
 var data_inp_param_glob;
+var data_col_names_glob;
 
 function getParseData(raw_data){
 
@@ -119,15 +133,19 @@ function generateTableNew(raw_data,real_order_data){
 
 	document.getElementById("contain-table").innerHTML = '<div style="background-color: #FFFFFF;border-color: #000000;padding: 20px;border-radius: 13px;box-shadow: 0px 0px 15px #888888;"><table id="example" class="display" ></table></div>';
 
+	data_col_names_glob = getParseDataColumns(raw_data);
+
 	var table = $('#example').DataTable({
         data: getParseData(raw_data),
-        columns: getParseDataColumns(raw_data),
+        columns: data_col_names_glob,
         "scrollX": true
     });
 
 	generateForm(raw_data);
 	// console.log(raw_data);
-	parseData(real_order_data);
+	// parseGData(real_order_data);
+	jsonGlob = real_order_data;
+	gload();
 	// $.getScript('visual.js', function() { parseData(real_order_data); });
 }
 
@@ -215,7 +233,7 @@ function generateInputForm(ip_col,op_col){
 	if(raw_data_glob.length==0){
 		return data;
 	}
-	document.getElementById("contain-selection").innerHTML = '<div id = "ip-selection" class="container-fluid" style="background-color: #FFFFFF;border-color: #000000;padding: 20px;border-radius: 13px;box-shadow: 0px 0px 15px #888888;"><form><div class="row" style="text-align: center;"><div class="col-lg-3"><!-- <p><strong>Year</strong></p> --></div><div class="col-lg-3"><strong>Start</strong></div><div class="col-lg-3"><strong>Number of Values</strong></div><div class="col-lg-3"><strong>Increment</strong></div></div></form></div>'
+	document.getElementById("contain-parameter").innerHTML = '<div id = "ip-selection" class="container-fluid" style="background-color: #FFFFFF;border-color: #000000;padding: 20px;border-radius: 13px;box-shadow: 0px 0px 15px #888888;"><form><div class="row" style="text-align: center;"><div class="col-lg-3"><!-- <p><strong>Year</strong></p> --></div><div class="col-lg-3"><strong>Start</strong></div><div class="col-lg-3"><strong>Number of Values</strong></div><div class="col-lg-3"><strong>Increment</strong></div></div></form></div>'
 
 
 	var row_dom = "";
@@ -235,8 +253,8 @@ function generateInputForm(ip_col,op_col){
 }
 
 function scrapeInpParameters(){
-	document.getElementById("generateInputForm").disabled = 'disabled';
-	document.getElementById("generateInputForm").disabled = '';
+	// document.getElementById("generateInputForm").disabled = 'disabled';
+	// document.getElementById("generateInputForm").disabled = '';
 
 	var s_ele = Object.values($('input[id^="txt_s_"]'));
 	var n_ele = Object.values($('input[id^="txt_n_"]'));
@@ -260,6 +278,8 @@ function scrapeInpParameters(){
 
 	data_inp_param_glob = inp_param;
 
+	console.log(inp_param);
+
 	var jqXHR_Data = $.ajax({
 					type: "POST",
 					url: "http://localhost:5000/runMLComponent",
@@ -268,18 +288,22 @@ function scrapeInpParameters(){
     				contentType: 'application/json;charset=UTF-8',
 					success: function(data) {
 						var img_url = "/ogd/visual.jpg";
-						$('#visualization').html('<img class="img-responsive"  src="'+img_url+'"/>');
+						// document.getElementById('yourimage').src = "url/of/image.jpg?random="+new Date().getTime();
+						document.getElementById("visualizationImage").src = img_url+'?random='+new Date().getTime();
+						// alert("image should have loaded");
+						// $('#visualization').html('<img class="img-responsive"  src="'+img_url+'"/>');
+						console.log(data.result);
 						populateResult(data.result);
 						// alert(data.result);
 					}
 				});		
 }
 
-function populateDatasetList(){
+function populateDatasetList(search_options){
 	var ele = document.getElementById("search_options");
 	// alert("yes");
 
-	var search_options = ["birthrate_statewise_1971-2012_per1000","registered_motor_vehicles_in_thousands","railwayfinancialresults_incrores","fdi_equity_in_flows_in_million_usd","annual_survey_of_datasets"];
+	// var search_options = ["birthrate_statewise_1971-2012_per1000","registered_motor_vehicles_in_thousands","railwayfinancialresults_incrores","fdi_equity_in_flows_in_million_usd","annual_survey_of_datasets","riceproduction_statewise_inthousandtonnes"];
 
 	for(var i=0;i<search_options.length;i++){
 		var search_item = '<option value="'+search_options[i]+'">';
@@ -288,70 +312,113 @@ function populateDatasetList(){
 }
 
 function populateResult(result){
-	var ele = document.getElementById("ml_result");
-	
-	var str_result = "";
+	var i=0;
+	var j=0;
 
-	for(var i =0;i<result.length;i++){
-		for(var j=0;j<result[i].length;j++){
-			str_result+= "	"+result[i][j]+"	";
-		}
-		str_result+="\n";
+	row_data = [];
+
+	for(i=0;i<result.length;i++){
+		row_ar = [];
+    	for (j=0;j<result[i].length;j++){
+    		if(result[i][j] == ','){
+
+    		}
+    		else {
+    			row_ar.push(result[i][j]);
+    		}
+    	}
+    	row_data.push(row_ar);
+	} 
+
+	col_data = [];
+
+	for(i=0;i<data_col_select_glob[0].length;i++){
+		var temp = data_col_select_glob[0][i];
+		col_data.push(data_col_names_glob[temp]);
 	}
 
-	ele.innerHTML = result;
+	for(i=0;i<data_col_select_glob[1].length;i++){
+		var temp = data_col_select_glob[1][i];
+		col_data.push(data_col_names_glob[temp]);
+	}
+
+	console.log("************");
+	console.log(data_col_select_glob);
+	console.log(data_col_names_glob);
+	console.log(row_data);
+	console.log(col_data);
+
+	generateResultTable(row_data,col_data);
+}
+
+function generateResultTable(row_data,col_data){
+	document.getElementById("contain-result-table").innerHTML = '<div style="background-color: #FFFFFF;border-color: #000000;padding: 20px;border-radius: 13px;box-shadow: 0px 0px 15px #888888;"><table id="resultDataTable" class="display" style="min-width: 100%"></table></div>';
+
+	var table = $('#resultDataTable').DataTable({
+        data: row_data,
+        columns: col_data,
+        "scrollX": true
+    });
 }
 
 // this is the end
 
-google.charts.load('current', {'packages':['corechart', 'controls']});
-      google.charts.setOnLoadCallback(decideGraphs);
+function gload(){
+	document.getElementById("visual-content").className = "visible";
+	google.charts.load('current', {'packages':['corechart', 'controls']});
+	google.charts.setOnLoadCallback(decideGraphs);
+	// alert("gload called");
+	// alert(jsonGlob);
+}
 
-      var chart;
-      var dashboard;
-      var donutRangeSlider;
-      var data2;
+var chart;
+var dashboard;
+var donutRangeSlider;
+var data2;
+var rangeSliderColumnNumber = 0;
+var data2ForHistogram;
+var noOfRecords;
 
-      
-      function parseData(jsonString)
-      {
-        // var jsonObj = JSON.parse('[{ "year": "2014","value1": 1, "value2": 10.5},{ "year": "2015","value1": 2, "value2": 20.5},{ "year": "2016","value1": 3, "value2": 1.5}]');
-        // var jsonObj = JSON.parse('[{ "year": 2014,"value1": 1, "value2": 10.5},{ "year": 2015,"value1": 2, "value2": 20.5},{ "year": 2016,"value1": 3, "value2": 1.5}]');
+function parseGData()
+{
+    // var jsonObj = JSON.parse('[{ "year": "2014","value1": 1, "value2": 10.5},{ "year": "2015","value1": 2, "value2": 20.5},{ "year": "2016","value1": 3, "value2": 1.5}]');
 
-        var jsonObj = JSON.parse(jsonString);
+    // var jsonObj = JSON.parse('[{ "year": 2014,"value1": 1, "value2": 10.5},{ "year": 2015,"value1": 2, "value2": 20.5},{ "year": 2016,"value1": 3, "value2": 1.5}]');
 
-        for (var i=0;i<jsonObj.length;i++){
-        	delete jsonObj[i].Entry;
-        }
+    var jsonObj = JSON.parse(jsonGlob);
 
-        console.log("after deletion:");
-        document.getElementById("ptestblock").innerHTML = JSON.stringify(jsonObj);
-        console.log(jsonObj);
+    console.log(jsonObj);
+    
+    for(var i=0;i<jsonObj.length;i++){
+        delete jsonObj[i].Entry;
+    }
 
-        var noOfRecords = jsonObj.length;
-        console.log(noOfRecords);
+    noOfRecords = jsonObj.length;
 
-        data2 = new Array();
+    // console.log(noOfRecords);
 
-        var labels = Object.keys(jsonObj[0]);
+    data2 = new Array();
 
-        data2.push(labels);
+    var labels = Object.keys(jsonObj[0]);
 
-        for (var i = 0; i < noOfRecords; i++) {
-          var newRow = Object.values(jsonObj[i]);
-          data2.push(newRow);
-        };
+    data2.push(labels);
 
-      }
+    for (var i = 0; i < noOfRecords; i++) {
+      var newRow = Object.values(jsonObj[i]);
+      data2.push(newRow);
+    };
+}
 
       function decideGraphs()
       {
-        parseData();
+        parseGData();
+        // dataToStringType();
         var htmlToInsert='';
         if(typeof data2[1][0]=='number')
         {
           document.getElementById("parent2").innerHTML = htmlToInsert;
-          drawChart();
+          console.log(data2[0][rangeSliderColumnNumber])
+          drawChart(data2[0][rangeSliderColumnNumber]);
         }
         else if(typeof data2[1][0]=='string')
         {
@@ -360,7 +427,17 @@ google.charts.load('current', {'packages':['corechart', 'controls']});
         }
       }
 
-      function drawChart() {
+      function dataToStringType() // This function makes data to string type and lets you plot histograms and pie data
+      {
+        for (var i = 1; i <= noOfRecords; i++) {
+          data2[i][0] = String(data2[i][0]);
+        };
+      }
+
+      function drawChart(filterColumnLabel) {
+      	if (filterColumnLabel === undefined) {
+        filterColumnLabel = data2[0][rangeSliderColumnNumber];
+    	}
 
 
         var data = new google.visualization.arrayToDataTable(data2);
@@ -371,7 +448,7 @@ google.charts.load('current', {'packages':['corechart', 'controls']});
           'controlType': 'NumberRangeFilter',
           'containerId': 'rangeSlider_div',
           'options': {
-            'filterColumnLabel': 'YEAR'
+            'filterColumnLabel': filterColumnLabel
           }
         });
 
@@ -387,7 +464,7 @@ google.charts.load('current', {'packages':['corechart', 'controls']});
             'actions': ['dragToZoom', 'rightClickToReset'],
             'axis': 'horizontal',
             'keepInBounds': true,
-            'maxZoomIn': 4.0
+            'maxZoomIn': 20.0
           }
           }
         });
@@ -423,29 +500,10 @@ google.charts.load('current', {'packages':['corechart', 'controls']});
 
       function changeChartType(chartType)
       {
-        if(chartType=='Histogram')
-        {
-          var newDataForHistogram = appropriateDataForHistogram(2,data2);
-          chart.setChartType(chartType);
-          donutRangeSlider.setOption('filterColumnLabel','values');
-          dashboard.draw(google.visualization.arrayToDataTable(newDataForHistogram))
-
-        }
-        else if(chartType=='PieChart')
-        {
-          var newDataForHistogram = appropriateDataForHistogram(2,data2);
-          chart.setChartType(chartType);
-          donutRangeSlider.setOption('filterColumnLabel','values');
-          dashboard.draw(google.visualization.arrayToDataTable(newDataForHistogram))
-
-        }
-        else
-        {
-          chart.setChartType(chartType);
-          donutRangeSlider.setOption('filterColumnLabel','YEAR');
-          dashboard.draw(google.visualization.arrayToDataTable(data2));
-          changeMenu(chartType);
-        }
+        chart.setChartType(chartType);
+        donutRangeSlider.setOption('filterColumnLabel',data2[0][rangeSliderColumnNumber]);
+        dashboard.draw(google.visualization.arrayToDataTable(data2));
+        changeMenu(chartType);
       }
 
       function changeMenu(chartType)
@@ -501,5 +559,5 @@ google.charts.load('current', {'packages':['corechart', 'controls']});
             'legend': 'right'
           };
 
-        chart2.draw(data,options);
-      }
+        chart2.draw(data,options);	
+	}

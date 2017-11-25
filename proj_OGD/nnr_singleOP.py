@@ -13,7 +13,6 @@ import sys
 from csv import reader
 import re
 from collections import Counter
-from sklearn.multioutput import MultiOutputRegressor
 
 np.set_printoptions(threshold='nan')
 
@@ -348,12 +347,10 @@ def apply_regression(filename, inCol, outCol, predValues):
 			nn = MLPRegressor(hidden_layer_sizes=(20), activation='tanh', solver='lbfgs', alpha=0.0001, batch_size='auto', learning_rate='adaptive', learning_rate_init=0.001, max_iter=500, shuffle=True, random_state=None, tol=0.00001, verbose=False, momentum=0.5, early_stopping=True, validation_fraction=0.15)
 		else:
 		"""
-		mysvr = SVR(C=100, cache_size=200, epsilon=0.00001, gamma=2,kernel='rbf', max_iter=-1, shrinking=True, tol=0.000001, verbose=False)
+		svr = SVR(C=100, cache_size=200, epsilon=0.00001, gamma=3,kernel='rbf', max_iter=-1, shrinking=True, tol=0.000001, verbose=False)
 		# gamma is fitting parameter, small gamma-> simpler curve, >gamma-> complex curve
 		
-		#create multioutput regressor
-		svr = MultiOutputRegressor(mysvr);
-					
+			
 		# train NN regression model
 		  
 		svr.fit(trI,trL);
@@ -361,12 +358,12 @@ def apply_regression(filename, inCol, outCol, predValues):
 		
 		# test model to get accuracy
 		
-		res = svr.score(teI,teL);
+		#res = svr.score(teI,teL);
 		# 'res' represents how well regression model is learned. 
 		# It is defined as (1 - u/v), where u is the residual sum of squares ((y_true - y_pred) ** 2).sum() 
 		# and v is the total sum of squares ((y_true - y_true.mean()) ** 2).sum()
 		
-		if (pri>0):	
+		if (pri>2):	
 			print 'Accuracy measure: ', res
 			
 		# predict label/rank for test instances/degrees for calculating error
@@ -438,12 +435,12 @@ def apply_regression(filename, inCol, outCol, predValues):
 	#z=array(sorted(zip(teL,yres,teI[:,0])));
 	#plt.plot(z[:,2],z[:,1],'x',ms=3)
 	#plt.plot(z[:,2],z[:,0],'-',ms=2)
-	plt.clf();
-	plt.plot(trI[:,0],trL,'x',ms=2)
 	
-	plt.plot(teI[:,0],teL,'x',ms=3)
+	plt.plot(trI[:,0],trL,'o',ms=2)
 	
-	plt.plot(pv,Pred,'o',ms=5)
+	#plt.plot(teI[:,0],teL,'o',ms=5)
+	
+	plt.plot(pv,Pred,'x',ms=3)
 	
 	#plt.xlabel('Year')
 	#plt.ylabel('Mortality Rate')
@@ -451,16 +448,11 @@ def apply_regression(filename, inCol, outCol, predValues):
 	savefig('C:\\xampp1\\htdocs\\ogd\\visual.jpg');
 	
 	pv = pv.tolist();
-	Pred = Pred.tolist();
-	#printV(zip(pv,Pred));
-	
-	#Pred = [e[0] for e in Pred]
-	#pv = [e[0] for e in pv]
-	# result = [ [e[0],e[1]] for e in zip(pv,Pred) ]
-	result = [ e[0]+[',']+e[1] for e in zip(pv,Pred) ]
+	Pred = [e[0] for e in Pred]
+	pv = [e[0] for e in pv]
+	result = [ [e[0],e[1]] for e in zip(pv,Pred) ]
 	#result = result.tolist();
-	# print result;
 	return result;
 
-# Pr = apply_regression('data.txt',[1],[3,4,5],[[0,2000,20,1]]);
-# printV (Pr);
+#Pr = apply_regression('data.txt',[0],[1],[[0,2013,20,1]]);
+#printV (Pr);

@@ -1,0 +1,37 @@
+	<div style="margin: auto;width: 80%; padding: 5px;background-color:#eeeeee;">
+	<div style="background-color: #FFFFFF;border-color: #000000;padding: 20px;border-radius: 13px;box-shadow: 0px 0px 15px #888888;">
+		<div id="parent1">
+
+		    <div id="dashboard_div">
+		      <div id="rangeSlider_div"></div>
+		      <div id="chart_div"></div>
+		    </div>
+
+		    <select class="btn1" name="Charts" onchange = "changeChartType(this.value);" style="width: 30%">
+		      <option value="ColumnChart">Column</option>
+		      <option value="LineChart">Line</option>
+		      <option value="AreaChart">Area</option>
+		    </select>
+
+		    <div id="availableProperties">
+		     lol
+		  	</div>
+		    
+		    <button onClick = "drawChart();" class="btn1">
+		     Refresh graph
+		    </button>
+
+   		</div>
+
+    	<div id="parent2">
+		    <input src="text" id="col_number_txt" value="1"></input>
+		    <div id="histo_div">
+		    <div id="chart_div_2"></div>
+	    </div>
+	    <button onClick="drawHistoAndPie('Histogram',document.getElementById('col_number_txt').value);">Draw Histogram</button>
+	    <button onClick="drawHistoAndPie('PieChart',document.getElementById('col_number_txt').value);">Draw Pie Chart</button>
+	</div>
+
+
+ 	</div>
+	</div>

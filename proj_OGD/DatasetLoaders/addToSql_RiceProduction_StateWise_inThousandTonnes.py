@@ -2,7 +2,7 @@ import xlrd
 import MySQLdb as SQL
 import readFromCSV as rfc
 
-def save_to_database(table,datasetPath,datasetName,datasetExtension,columnDataTypes):
+def save_to_database(table,datasetPath,datasetName,datasetExtension,columnDataTypes,fancyName):
 	# Connect to the MySQL database
 	db = SQL.connect(host='localhost', user='root', passwd='', db='ogd')
 
@@ -28,7 +28,10 @@ def save_to_database(table,datasetPath,datasetName,datasetExtension,columnDataTy
 
 		for j in range(0,len(table[i])):
 			if str(table[i][j])!= 'NA':
-				insertCommand += str(table[i][j])+","
+				if columnDataTypes[j] == 'varchar(256)':
+					insertCommand += "'"+str(table[i][j])+"',";
+				else:
+					insertCommand += str(table[i][j]) + ",";
 			else:
 				insertCommand += "NULL"+","
 		insertCommand = insertCommand[0:-1]+")";
@@ -54,18 +57,25 @@ def exportFromExcel(filename):
 
 	return data;
 
-datasetPath = "C:\Users\SnehilAmeta\PycharmProjects\proj_OGD\Datasets\BirthRate_StateWise_1971-2012_per1000.csv";
-datasetName = "BirthRate_StateWise_1971-2012_per1000";
+datasetPath = "C:\Users\SnehilAmeta\PycharmProjects\proj_OGD\Datasets\RiceProduction_StateWise_inThousandTonnes.csv";
+datasetName = "RiceProduction_StateWise_inThousandTonnes";
+fancyName = "State-wise Rice Production (in Thousand tonnes)";
 datasetExtension = ".csv";
-fancyName = "State-Wise Birth-Rate (per 1000)"
 
 data = rfc.load_all(datasetPath);
-data[0][0] = "Year";
-# printV(data);
+data = data.transpose();
 
-columnDataTypes = [];
+for i in xrange(1,len(data)):
+	data[i][0] = data[i][0].split("-")[0];
 
-for i in xrange(0,len(data[0])):
+# data[0][0] = "Year";
+printV(data);
+
+columnDataTypes = ["varchar(256)"];
+
+for i in xrange(1,len(data[0])):
 	columnDataTypes.append("double(50,5)");
 
-save_to_database(data,datasetPath,datasetName,datasetExtension,columnDataTypes);
+printV(columnDataTypes);
+
+save_to_database(data,datasetPath,datasetName,datasetExtension,columnDataTypes,fancyName);

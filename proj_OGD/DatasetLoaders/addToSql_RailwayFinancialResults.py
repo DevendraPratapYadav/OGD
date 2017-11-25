@@ -11,7 +11,7 @@ def save_to_database(table,datasetPath,datasetName,datasetExtension,columnDataTy
 
 	# Execution of a SQL statement
 	# cursor.execute("select * from mortality")
-	createCommand = "CREATE TABLE " +"`"+datasetName+"`"+"( Entry int NOT NULL AUTO_INCREMENT PRIMARY KEY,";
+	createCommand = "CREATE TABLE " +"`"+fancyName+"`"+"( Entry int NOT NULL AUTO_INCREMENT PRIMARY KEY,";
 
 	for i in xrange(0,len(columnDataTypes)):
 		createCommand += "`"+table[0][i]+"`"+" "+columnDataTypes[i]+" ,";
@@ -24,7 +24,7 @@ def save_to_database(table,datasetPath,datasetName,datasetExtension,columnDataTy
 
 	for i in xrange(1,len(table)):
 		insertCommand = "";
-		insertCommand = "insert into "+"`"+datasetName+"`"+" values(NULL,";
+		insertCommand = "insert into "+"`"+fancyName+"`"+" values(NULL,";
 
 		for j in range(0,len(table[i])):
 			if str(table[i][j])!= 'NA':
@@ -57,6 +57,7 @@ def exportFromExcel(filename):
 datasetPath = "C:\Users\SnehilAmeta\PycharmProjects\proj_OGD\Datasets\RailwayFinancialResults_inCrores.csv";
 datasetName = "RailwayFinancialResults_inCrores";
 datasetExtension = ".csv";
+fancyName = "Railway Financial Results (in Crores)"
 
 data = rfc.load_all(datasetPath);
 data = data.transpose();

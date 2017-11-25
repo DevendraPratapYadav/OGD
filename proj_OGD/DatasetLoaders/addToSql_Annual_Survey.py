@@ -2,7 +2,7 @@ import xlrd
 import MySQLdb as SQL
 import readFromCSV as rfc
 
-def save_to_database(table,datasetName,columnDataTypes):
+def save_to_database(table,datasetName,columnDataTypes,fancyName):
 	# Connect to the MySQL database
 	db = SQL.connect(host='localhost', user='root', passwd='', db='ogd')
 
@@ -11,7 +11,7 @@ def save_to_database(table,datasetName,columnDataTypes):
 
 	# Execution of a SQL statement
 	# cursor.execute("select * from mortality")
-	createCommand = "CREATE TABLE " + datasetName+"( Entry int NOT NULL AUTO_INCREMENT PRIMARY KEY,";
+	createCommand = "CREATE TABLE " +"`"+ fancyName+"`"+"( Entry int NOT NULL AUTO_INCREMENT PRIMARY KEY,";
 
 	for i in xrange(0,len(columnDataTypes)):
 		createCommand += "`"+table[0][i]+"`"+" "+columnDataTypes[i]+" ,";
@@ -24,7 +24,7 @@ def save_to_database(table,datasetName,columnDataTypes):
 
 	for i in xrange(1,len(table)):
 		insertCommand = "";
-		insertCommand = "insert into "+datasetName+" values(NULL,";
+		insertCommand = "insert into "+"`"+ fancyName+"`"+" values(NULL,";
 
 		for j in range(0,len(table[i])):
 			if str(table[i][j])!= 'NA':
@@ -55,16 +55,14 @@ def exportFromExcel(filename):
 	return data;
 
 datasetName = "Annual_Survey_Of_Datasets";
-# data = exportFromExcel(datasetName+".xlsx");
-# data = exportFromExcel()
+data = exportFromExcel(datasetName+".xlsx");
+fancyName = "Annual Survey of Datasets";
 
-data = rfc.load_all(datasetName);
+# data = rfc.load_all(datasetName);
 
 columnDataTypes = [];
 
 for i in xrange(0,len(data[0])):
 	columnDataTypes.append("double(50,5)");
 
-save_to_database(data,datasetName,columnDataTypes);
-
-
+save_to_database(data,datasetName,columnDataTypes,fancyName);

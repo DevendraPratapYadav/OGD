@@ -2,7 +2,7 @@ import xlrd
 import MySQLdb as SQL
 import readFromCSV as rfc
 
-def save_to_database(table,datasetPath,datasetName,datasetExtension,columnDataTypes):
+def save_to_database(table,datasetPath,datasetName,datasetExtension,columnDataTypes,fancyName):
 	# Connect to the MySQL database
 	db = SQL.connect(host='localhost', user='root', passwd='', db='ogd')
 
@@ -11,7 +11,7 @@ def save_to_database(table,datasetPath,datasetName,datasetExtension,columnDataTy
 
 	# Execution of a SQL statement
 	# cursor.execute("select * from mortality")
-	createCommand = "CREATE TABLE " +"`"+datasetName+"`"+"( Entry int NOT NULL AUTO_INCREMENT PRIMARY KEY,";
+	createCommand = "CREATE TABLE " +"`"+fancyName+"`"+"( Entry int NOT NULL AUTO_INCREMENT PRIMARY KEY,";
 
 	for i in xrange(0,len(columnDataTypes)):
 		createCommand += "`"+table[0][i]+"`"+" "+columnDataTypes[i]+" ,";
@@ -24,7 +24,7 @@ def save_to_database(table,datasetPath,datasetName,datasetExtension,columnDataTy
 
 	for i in xrange(1,len(table)):
 		insertCommand = "";
-		insertCommand = "insert into "+"`"+datasetName+"`"+" values(NULL,";
+		insertCommand = "insert into "+"`"+fancyName+"`"+" values(NULL,";
 
 		for j in range(0,len(table[i])):
 			if str(table[i][j])!= 'NA':
@@ -56,6 +56,7 @@ def exportFromExcel(filename):
 
 datasetPath = "C:\Users\SnehilAmeta\PycharmProjects\proj_OGD\Datasets\Registered_Motor_Vehicles_In_Thousands.csv";
 datasetName = "Registered_Motor_Vehicles_In_Thousands";
+fancyName = "Registered Motor Vehicles (In Thousands)"
 datasetExtension = ".csv";
 
 data = rfc.load_all(datasetPath);
@@ -68,4 +69,4 @@ columnDataTypes = [];
 for i in xrange(0,len(data[0])):
 	columnDataTypes.append("double(50,5)");
 
-save_to_database(data,datasetPath,datasetName,datasetExtension,columnDataTypes);
+save_to_database(data,datasetPath,datasetName,datasetExtension,columnDataTypes,fancyName);
