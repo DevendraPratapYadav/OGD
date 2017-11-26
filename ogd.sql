@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 25, 2017 at 02:09 PM
+-- Generation Time: Nov 26, 2017 at 10:13 PM
 -- Server version: 10.1.26-MariaDB
 -- PHP Version: 7.1.9
 
@@ -67,7 +67,7 @@ CREATE TABLE `annual survey of datasets` (
   `ADDITION IN STOCK OF TOTAL` double(50,5) DEFAULT NULL,
   `GROSS CAPITAL FORMATION` double(50,5) DEFAULT NULL,
   `PROFITS` double(50,5) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='[-1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='[-1 2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]';
 
 --
 -- Dumping data for table `annual survey of datasets`
@@ -114,7 +114,7 @@ INSERT INTO `annual survey of datasets` (`Entry`, `YEAR`, `NUMBER OF FACTORIES`,
 
 CREATE TABLE `datasets` (
   `Entry` int(11) NOT NULL,
-  `Name` varchar(256) NOT NULL
+  `Name` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -126,7 +126,8 @@ INSERT INTO `datasets` (`Entry`, `Name`) VALUES
 (2, 'FDI Equity Inflow (In Million)'),
 (3, 'Registered Motor Vehicles (In Thousands)'),
 (4, 'State-Wise Birth-Rate (per 1000)'),
-(5, 'State-Wise Rice Production (In Thousand Tonnes)');
+(5, 'State-Wise Rice Production (In Thousand Tonnes)'),
+(6, 'Railway Financial Results (In Crores)');
 
 -- --------------------------------------------------------
 
@@ -201,7 +202,7 @@ CREATE TABLE `fdi equity inflow (in million)` (
   `CONSTRUCTION DEVELOPMENT` double(50,5) DEFAULT NULL,
   `MISCELLANEOUS INDUSTRIES` double(50,5) DEFAULT NULL,
   `Grand Total` double(50,5) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='[-1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='[-1 2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]';
 
 --
 -- Dumping data for table `fdi equity inflow (in million)`
@@ -305,7 +306,7 @@ CREATE TABLE `railway financial results (in crores)` (
   `Operating Ratio` double(50,5) DEFAULT NULL,
   `Ratio of Net Revenue to Capital at Charge` double(50,5) DEFAULT NULL,
   `Expenditure on Works against Development Fund` double(50,5) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='[-1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='[-1 2 0 0 0 0 0 0 0 0 0 0 0 0 0 0]';
 
 --
 -- Dumping data for table `railway financial results (in crores)`
@@ -384,7 +385,7 @@ CREATE TABLE `registered motor vehicles (in thousands)` (
   `Buses` double(50,5) DEFAULT NULL,
   `Goods Vehicles` double(50,5) DEFAULT NULL,
   `Others` double(50,5) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='[-1 0 0 0 0 0 0 0]';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='[-1 2 0 0 0 0 0 0]';
 
 --
 -- Dumping data for table `registered motor vehicles (in thousands)`
@@ -496,7 +497,7 @@ CREATE TABLE `state-wise birth-rate (per 1000)` (
   `Daman and Diu` double(50,5) DEFAULT NULL,
   `Lakshadweep` double(50,5) DEFAULT NULL,
   `Puducherry` double(50,5) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='[-1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='[-1 2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]';
 
 --
 -- Dumping data for table `state-wise birth-rate (per 1000)`
@@ -591,6 +592,52 @@ INSERT INTO `state-wise rice production (in thousand tonnes)` (`Entry`, `State`,
 (22, 'Others', 2370.60000, 2441.70000, 2309.30000, -61.30000, -132.40000),
 (23, 'All', 103728.00000, 105482.10000, 103612.70000, -115.30000, -1869.30000);
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user history`
+--
+
+CREATE TABLE `user history` (
+  `Entry` int(11) NOT NULL,
+  `ID` varchar(40) NOT NULL,
+  `Time` datetime DEFAULT CURRENT_TIMESTAMP,
+  `Session` varchar(30000) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `user history`
+--
+
+INSERT INTO `user history` (`Entry`, `ID`, `Time`, `Session`) VALUES
+(1, 'snehilameta96@gmail.com', NULL, '[\"snehilameta96@gmail.com\", \"FDI Equity Inflow (In Million)\", [[1], [2, 3]], [[1, \"2010\", \"10\", \"1\"]], [{\"sTitle\": \"Entry\", \"title\": \"Entry\"}, {\"sTitle\": \"Year\", \"title\": \"Year\"}, {\"sTitle\": \"METALLURGICAL INDUSTRIES\", \"title\": \"METALLURGICAL INDUSTRIES\"}, {\"sTitle\": \"MINING\", \"title\": \"MINING\"}, {\"sTitle\": \"POWER\", \"title\": \"POWER\"}, {\"sTitle\": \"NON-CONVENTIONAL ENERGY\", \"title\": \"NON-CONVENTIONAL ENERGY\"}, {\"sTitle\": \"COAL PRODUCTION\", \"title\": \"COAL PRODUCTION\"}, {\"sTitle\": \"PETROLEUM & NATURAL GAS\", \"title\": \"PETROLEUM & NATURAL GAS\"}, {\"sTitle\": \"BOILERS AND STEAM GENERATING PLANTS\", \"title\": \"BOILERS AND STEAM GENERATING PLANTS\"}, {\"sTitle\": \"PRIME MOVER (OTHER THAN ELECTRICAL GENERATORS)\", \"title\": \"PRIME MOVER (OTHER THAN ELECTRICAL GENERATORS)\"}, {\"sTitle\": \"ELECTRICAL EQUIPMENTS\", \"title\": \"ELECTRICAL EQUIPMENTS\"}, {\"sTitle\": \"COMPUTER SOFTWARE & HARDWARE\", \"title\": \"COMPUTER SOFTWARE & HARDWARE\"}, {\"sTitle\": \"ELECTRONICS\", \"title\": \"ELECTRONICS\"}, {\"sTitle\": \"TELECOMMUNICATIONS\", \"title\": \"TELECOMMUNICATIONS\"}, {\"sTitle\": \"INFORMATION & BROADCASTING (INCLUDING PRINT MEDIA)\", \"title\": \"INFORMATION & BROADCASTING (INCLUDING PRINT MEDIA)\"}, {\"sTitle\": \"AUTOMOBILE INDUSTRY\", \"title\": \"AUTOMOBILE INDUSTRY\"}, {\"sTitle\": \"AIR TRANSPORT (INCLUDING AIR FREIGHT)\", \"title\": \"AIR TRANSPORT (INCLUDING AIR FREIGHT)\"}, {\"sTitle\": \"SEA TRANSPORT\", \"title\": \"SEA TRANSPORT\"}, {\"sTitle\": \"PORTS\", \"title\": \"PORTS\"}, {\"sTitle\": \"RAILWAY RELATED COMPONENTS\", \"title\": \"RAILWAY RELATED COMPONENTS\"}, {\"sTitle\": \"INDUSTRIAL MACHINERY\", \"title\": \"INDUSTRIAL MACHINERY\"}, {\"sTitle\": \"MACHINE TOOLS\", \"title\": \"MACHINE TOOLS\"}, {\"sTitle\": \"AGRICULTURAL MACHINERY\", \"title\": \"AGRICULTURAL MACHINERY\"}, {\"sTitle\": \"EARTH-MOVING MACHINERY\", \"title\": \"EARTH-MOVING MACHINERY\"}, {\"sTitle\": \"MISCELLANEOUS MECHANICAL & ENGINEERING INDUSTRIES\", \"title\": \"MISCELLANEOUS MECHANICAL & ENGINEERING INDUSTRIES\"}, {\"sTitle\": \"COMMERCIAL, OFFICE & HOUSEHOLD EQUIPMENTS\", \"title\": \"COMMERCIAL, OFFICE & HOUSEHOLD EQUIPMENTS\"}, {\"sTitle\": \"MEDICAL AND SURGICAL APPLIANCES\", \"title\": \"MEDICAL AND SURGICAL APPLIANCES\"}, {\"sTitle\": \"INDUSTRIAL INSTRUMENTS\", \"title\": \"INDUSTRIAL INSTRUMENTS\"}, {\"sTitle\": \"SCIENTIFIC INSTRUMENTS\", \"title\": \"SCIENTIFIC INSTRUMENTS\"}, {\"sTitle\": \"MATHEMATICAL,SURVEYING AND DRAWING INSTRUMENTS\", \"title\": \"MATHEMATICAL,SURVEYING AND DRAWING INSTRUMENTS\"}, {\"sTitle\": \"FERTILIZERS\", \"title\": \"FERTILIZERS\"}, {\"sTitle\": \"CHEMICALS (OTHER THAN FERTILIZERS)\", \"title\": \"CHEMICALS (OTHER THAN FERTILIZERS)\"}, {\"sTitle\": \"PHOTOGRAPHIC RAW FILM AND PAPER\", \"title\": \"PHOTOGRAPHIC RAW FILM AND PAPER\"}, {\"sTitle\": \"DYE-STUFFS\", \"title\": \"DYE-STUFFS\"}, {\"sTitle\": \"DRUGS & PHARMACEUTICALS\", \"title\": \"DRUGS & PHARMACEUTICALS\"}, {\"sTitle\": \"TEXTILES (INCLUDING DYED,PRINTED)\", \"title\": \"TEXTILES (INCLUDING DYED,PRINTED)\"}, {\"sTitle\": \"PAPER AND PULP (INCLUDING PAPER PRODUCTS)\", \"title\": \"PAPER AND PULP (INCLUDING PAPER PRODUCTS)\"}, {\"sTitle\": \"SUGAR\", \"title\": \"SUGAR\"}, {\"sTitle\": \"FERMENTATION INDUSTRIES\", \"title\": \"FERMENTATION INDUSTRIES\"}, {\"sTitle\": \"FOOD PROCESSING INDUSTRIES\", \"title\": \"FOOD PROCESSING INDUSTRIES\"}, {\"sTitle\": \"VEGETABLE OILS AND VANASPATI\", \"title\": \"VEGETABLE OILS AND VANASPATI\"}, {\"sTitle\": \"SOAPS, COSMETICS & TOILET PREPARATIONS\", \"title\": \"SOAPS, COSMETICS & TOILET PREPARATIONS\"}, {\"sTitle\": \"RUBBER GOODS\", \"title\": \"RUBBER GOODS\"}, {\"sTitle\": \"LEATHER,LEATHER GOODS AND PICKERS\", \"title\": \"LEATHER,LEATHER GOODS AND PICKERS\"}, {\"sTitle\": \"GLUE AND GELATIN\", \"title\": \"GLUE AND GELATIN\"}, {\"sTitle\": \"GLASS\", \"title\": \"GLASS\"}, {\"sTitle\": \"CERAMICS\", \"title\": \"CERAMICS\"}, {\"sTitle\": \"CEMENT AND GYPSUM PRODUCTS\", \"title\": \"CEMENT AND GYPSUM PRODUCTS\"}, {\"sTitle\": \"TIMBER PRODUCTS\", \"title\": \"TIMBER PRODUCTS\"}, {\"sTitle\": \"DEFENCE INDUSTRIES\", \"title\": \"DEFENCE INDUSTRIES\"}, {\"sTitle\": \"CONSULTANCY SERVICES\", \"title\": \"CONSULTANCY SERVICES\"}, {\"sTitle\": \"SERVICES SECTOR (Fin.,Banking)\", \"title\": \"SERVICES SECTOR (Fin.,Banking)\"}, {\"sTitle\": \"HOSPITAL & DIAGNOSTIC CENTRES\", \"title\": \"HOSPITAL & DIAGNOSTIC CENTRES\"}, {\"sTitle\": \"EDUCATION\", \"title\": \"EDUCATION\"}, {\"sTitle\": \"HOTEL & TOURISM\", \"title\": \"HOTEL & TOURISM\"}, {\"sTitle\": \"TRADING\", \"title\": \"TRADING\"}, {\"sTitle\": \"RETAIL TRADING\", \"title\": \"RETAIL TRADING\"}, {\"sTitle\": \"AGRICULTURE SERVICES\", \"title\": \"AGRICULTURE SERVICES\"}, {\"sTitle\": \"DIAMOND,GOLD ORNAMENTS\", \"title\": \"DIAMOND,GOLD ORNAMENTS\"}, {\"sTitle\": \"TEA AND COFFEE (PROCESSING & WAREHOUSING COFFEE & RUBBER)\", \"title\": \"TEA AND COFFEE (PROCESSING & WAREHOUSING COFFEE & RUBBER)\"}, {\"sTitle\": \"PRINTING OF BOOKS (INCLUDING LITHO PRINTING INDUSTRY)\", \"title\": \"PRINTING OF BOOKS (INCLUDING LITHO PRINTING INDUSTRY)\"}, {\"sTitle\": \"COIR\", \"title\": \"COIR\"}, {\"sTitle\": \"CONSTRUCTION (INFRASTRUCTURE) ACTIVITIES\", \"title\": \"CONSTRUCTION (INFRASTRUCTURE) ACTIVITIES\"}, {\"sTitle\": \"CONSTRUCTION DEVELOPMENT\", \"title\": \"CONSTRUCTION DEVELOPMENT\"}, {\"sTitle\": \"MISCELLANEOUS INDUSTRIES\", \"title\": \"MISCELLANEOUS INDUSTRIES\"}, {\"sTitle\": \"Grand Total\", \"title\": \"Grand Total\"}]]'),
+(2, 'snehilameta96@gmail.com', NULL, '[\"snehilameta96@gmail.com\", \"Registered Motor Vehicles (In Thousands)\", [[1], [2, 3]], [[1, \"2020\", \"10\", \"1\"]], [{\"sTitle\": \"Entry\", \"title\": \"Entry\"}, {\"sTitle\": \"Year\", \"title\": \"Year\"}, {\"sTitle\": \"All Vehicles\", \"title\": \"All Vehicles\"}, {\"sTitle\": \"Two Wheelers\", \"title\": \"Two Wheelers\"}, {\"sTitle\": \"Cars, Jeeps and Taxis\", \"title\": \"Cars, Jeeps and Taxis\"}, {\"sTitle\": \"Buses\", \"title\": \"Buses\"}, {\"sTitle\": \"Goods Vehicles\", \"title\": \"Goods Vehicles\"}, {\"sTitle\": \"Others\", \"title\": \"Others\"}]]'),
+(3, 'snehilameta96@gmail.com', NULL, '[\"snehilameta96@gmail.com\", \"Registered Motor Vehicles (In Thousands)\", [[1], [2, 3]], [[1, \"2010\", \"10\", \"2\"]], [{\"sTitle\": \"Entry\", \"title\": \"Entry\"}, {\"sTitle\": \"Year\", \"title\": \"Year\"}, {\"sTitle\": \"All Vehicles\", \"title\": \"All Vehicles\"}, {\"sTitle\": \"Two Wheelers\", \"title\": \"Two Wheelers\"}, {\"sTitle\": \"Cars, Jeeps and Taxis\", \"title\": \"Cars, Jeeps and Taxis\"}, {\"sTitle\": \"Buses\", \"title\": \"Buses\"}, {\"sTitle\": \"Goods Vehicles\", \"title\": \"Goods Vehicles\"}, {\"sTitle\": \"Others\", \"title\": \"Others\"}]]'),
+(4, 'snehilameta96@gmail.com', NULL, '[\"snehilameta96@gmail.com\", \"FDI Equity Inflow (In Million)\", [[1], [2, 3]], [[1, \"2010\", \"10\", \"1\"]], [{\"sTitle\": \"Entry\", \"title\": \"Entry\"}, {\"sTitle\": \"Year\", \"title\": \"Year\"}, {\"sTitle\": \"METALLURGICAL INDUSTRIES\", \"title\": \"METALLURGICAL INDUSTRIES\"}, {\"sTitle\": \"MINING\", \"title\": \"MINING\"}, {\"sTitle\": \"POWER\", \"title\": \"POWER\"}, {\"sTitle\": \"NON-CONVENTIONAL ENERGY\", \"title\": \"NON-CONVENTIONAL ENERGY\"}, {\"sTitle\": \"COAL PRODUCTION\", \"title\": \"COAL PRODUCTION\"}, {\"sTitle\": \"PETROLEUM & NATURAL GAS\", \"title\": \"PETROLEUM & NATURAL GAS\"}, {\"sTitle\": \"BOILERS AND STEAM GENERATING PLANTS\", \"title\": \"BOILERS AND STEAM GENERATING PLANTS\"}, {\"sTitle\": \"PRIME MOVER (OTHER THAN ELECTRICAL GENERATORS)\", \"title\": \"PRIME MOVER (OTHER THAN ELECTRICAL GENERATORS)\"}, {\"sTitle\": \"ELECTRICAL EQUIPMENTS\", \"title\": \"ELECTRICAL EQUIPMENTS\"}, {\"sTitle\": \"COMPUTER SOFTWARE & HARDWARE\", \"title\": \"COMPUTER SOFTWARE & HARDWARE\"}, {\"sTitle\": \"ELECTRONICS\", \"title\": \"ELECTRONICS\"}, {\"sTitle\": \"TELECOMMUNICATIONS\", \"title\": \"TELECOMMUNICATIONS\"}, {\"sTitle\": \"INFORMATION & BROADCASTING (INCLUDING PRINT MEDIA)\", \"title\": \"INFORMATION & BROADCASTING (INCLUDING PRINT MEDIA)\"}, {\"sTitle\": \"AUTOMOBILE INDUSTRY\", \"title\": \"AUTOMOBILE INDUSTRY\"}, {\"sTitle\": \"AIR TRANSPORT (INCLUDING AIR FREIGHT)\", \"title\": \"AIR TRANSPORT (INCLUDING AIR FREIGHT)\"}, {\"sTitle\": \"SEA TRANSPORT\", \"title\": \"SEA TRANSPORT\"}, {\"sTitle\": \"PORTS\", \"title\": \"PORTS\"}, {\"sTitle\": \"RAILWAY RELATED COMPONENTS\", \"title\": \"RAILWAY RELATED COMPONENTS\"}, {\"sTitle\": \"INDUSTRIAL MACHINERY\", \"title\": \"INDUSTRIAL MACHINERY\"}, {\"sTitle\": \"MACHINE TOOLS\", \"title\": \"MACHINE TOOLS\"}, {\"sTitle\": \"AGRICULTURAL MACHINERY\", \"title\": \"AGRICULTURAL MACHINERY\"}, {\"sTitle\": \"EARTH-MOVING MACHINERY\", \"title\": \"EARTH-MOVING MACHINERY\"}, {\"sTitle\": \"MISCELLANEOUS MECHANICAL & ENGINEERING INDUSTRIES\", \"title\": \"MISCELLANEOUS MECHANICAL & ENGINEERING INDUSTRIES\"}, {\"sTitle\": \"COMMERCIAL, OFFICE & HOUSEHOLD EQUIPMENTS\", \"title\": \"COMMERCIAL, OFFICE & HOUSEHOLD EQUIPMENTS\"}, {\"sTitle\": \"MEDICAL AND SURGICAL APPLIANCES\", \"title\": \"MEDICAL AND SURGICAL APPLIANCES\"}, {\"sTitle\": \"INDUSTRIAL INSTRUMENTS\", \"title\": \"INDUSTRIAL INSTRUMENTS\"}, {\"sTitle\": \"SCIENTIFIC INSTRUMENTS\", \"title\": \"SCIENTIFIC INSTRUMENTS\"}, {\"sTitle\": \"MATHEMATICAL,SURVEYING AND DRAWING INSTRUMENTS\", \"title\": \"MATHEMATICAL,SURVEYING AND DRAWING INSTRUMENTS\"}, {\"sTitle\": \"FERTILIZERS\", \"title\": \"FERTILIZERS\"}, {\"sTitle\": \"CHEMICALS (OTHER THAN FERTILIZERS)\", \"title\": \"CHEMICALS (OTHER THAN FERTILIZERS)\"}, {\"sTitle\": \"PHOTOGRAPHIC RAW FILM AND PAPER\", \"title\": \"PHOTOGRAPHIC RAW FILM AND PAPER\"}, {\"sTitle\": \"DYE-STUFFS\", \"title\": \"DYE-STUFFS\"}, {\"sTitle\": \"DRUGS & PHARMACEUTICALS\", \"title\": \"DRUGS & PHARMACEUTICALS\"}, {\"sTitle\": \"TEXTILES (INCLUDING DYED,PRINTED)\", \"title\": \"TEXTILES (INCLUDING DYED,PRINTED)\"}, {\"sTitle\": \"PAPER AND PULP (INCLUDING PAPER PRODUCTS)\", \"title\": \"PAPER AND PULP (INCLUDING PAPER PRODUCTS)\"}, {\"sTitle\": \"SUGAR\", \"title\": \"SUGAR\"}, {\"sTitle\": \"FERMENTATION INDUSTRIES\", \"title\": \"FERMENTATION INDUSTRIES\"}, {\"sTitle\": \"FOOD PROCESSING INDUSTRIES\", \"title\": \"FOOD PROCESSING INDUSTRIES\"}, {\"sTitle\": \"VEGETABLE OILS AND VANASPATI\", \"title\": \"VEGETABLE OILS AND VANASPATI\"}, {\"sTitle\": \"SOAPS, COSMETICS & TOILET PREPARATIONS\", \"title\": \"SOAPS, COSMETICS & TOILET PREPARATIONS\"}, {\"sTitle\": \"RUBBER GOODS\", \"title\": \"RUBBER GOODS\"}, {\"sTitle\": \"LEATHER,LEATHER GOODS AND PICKERS\", \"title\": \"LEATHER,LEATHER GOODS AND PICKERS\"}, {\"sTitle\": \"GLUE AND GELATIN\", \"title\": \"GLUE AND GELATIN\"}, {\"sTitle\": \"GLASS\", \"title\": \"GLASS\"}, {\"sTitle\": \"CERAMICS\", \"title\": \"CERAMICS\"}, {\"sTitle\": \"CEMENT AND GYPSUM PRODUCTS\", \"title\": \"CEMENT AND GYPSUM PRODUCTS\"}, {\"sTitle\": \"TIMBER PRODUCTS\", \"title\": \"TIMBER PRODUCTS\"}, {\"sTitle\": \"DEFENCE INDUSTRIES\", \"title\": \"DEFENCE INDUSTRIES\"}, {\"sTitle\": \"CONSULTANCY SERVICES\", \"title\": \"CONSULTANCY SERVICES\"}, {\"sTitle\": \"SERVICES SECTOR (Fin.,Banking)\", \"title\": \"SERVICES SECTOR (Fin.,Banking)\"}, {\"sTitle\": \"HOSPITAL & DIAGNOSTIC CENTRES\", \"title\": \"HOSPITAL & DIAGNOSTIC CENTRES\"}, {\"sTitle\": \"EDUCATION\", \"title\": \"EDUCATION\"}, {\"sTitle\": \"HOTEL & TOURISM\", \"title\": \"HOTEL & TOURISM\"}, {\"sTitle\": \"TRADING\", \"title\": \"TRADING\"}, {\"sTitle\": \"RETAIL TRADING\", \"title\": \"RETAIL TRADING\"}, {\"sTitle\": \"AGRICULTURE SERVICES\", \"title\": \"AGRICULTURE SERVICES\"}, {\"sTitle\": \"DIAMOND,GOLD ORNAMENTS\", \"title\": \"DIAMOND,GOLD ORNAMENTS\"}, {\"sTitle\": \"TEA AND COFFEE (PROCESSING & WAREHOUSING COFFEE & RUBBER)\", \"title\": \"TEA AND COFFEE (PROCESSING & WAREHOUSING COFFEE & RUBBER)\"}, {\"sTitle\": \"PRINTING OF BOOKS (INCLUDING LITHO PRINTING INDUSTRY)\", \"title\": \"PRINTING OF BOOKS (INCLUDING LITHO PRINTING INDUSTRY)\"}, {\"sTitle\": \"COIR\", \"title\": \"COIR\"}, {\"sTitle\": \"CONSTRUCTION (INFRASTRUCTURE) ACTIVITIES\", \"title\": \"CONSTRUCTION (INFRASTRUCTURE) ACTIVITIES\"}, {\"sTitle\": \"CONSTRUCTION DEVELOPMENT\", \"title\": \"CONSTRUCTION DEVELOPMENT\"}, {\"sTitle\": \"MISCELLANEOUS INDUSTRIES\", \"title\": \"MISCELLANEOUS INDUSTRIES\"}, {\"sTitle\": \"Grand Total\", \"title\": \"Grand Total\"}]]'),
+(5, 'snehilameta96@gmail.com', NULL, '[\"snehilameta96@gmail.com\", \"Registered Motor Vehicles (In Thousands)\", [[1], [2, 3]], [[1, \"2010\", \"10\", \"1\"]], [{\"sTitle\": \"Entry\", \"title\": \"Entry\"}, {\"sTitle\": \"Year\", \"title\": \"Year\"}, {\"sTitle\": \"All Vehicles\", \"title\": \"All Vehicles\"}, {\"sTitle\": \"Two Wheelers\", \"title\": \"Two Wheelers\"}, {\"sTitle\": \"Cars, Jeeps and Taxis\", \"title\": \"Cars, Jeeps and Taxis\"}, {\"sTitle\": \"Buses\", \"title\": \"Buses\"}, {\"sTitle\": \"Goods Vehicles\", \"title\": \"Goods Vehicles\"}, {\"sTitle\": \"Others\", \"title\": \"Others\"}]]');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `Entry` int(11) NOT NULL,
+  `Name` int(11) NOT NULL,
+  `ID` varchar(200) NOT NULL,
+  `Log` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`Entry`, `Name`, `ID`, `Log`) VALUES
+(2, 0, 'snehilameta96@gmail.com', 1),
+(3, 0, '', 1),
+(4, 0, '2014csb1035@iitrpr.ac.in', 1);
+
 --
 -- Indexes for dumped tables
 --
@@ -650,6 +697,19 @@ ALTER TABLE `state-wise rice production (in thousand tonnes)`
   ADD PRIMARY KEY (`Entry`);
 
 --
+-- Indexes for table `user history`
+--
+ALTER TABLE `user history`
+  ADD PRIMARY KEY (`Entry`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`Entry`),
+  ADD UNIQUE KEY `ID` (`ID`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -663,7 +723,7 @@ ALTER TABLE `annual survey of datasets`
 -- AUTO_INCREMENT for table `datasets`
 --
 ALTER TABLE `datasets`
-  MODIFY `Entry` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `Entry` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `fdi equity inflow (in million)`
@@ -694,6 +754,18 @@ ALTER TABLE `state-wise birth-rate (per 1000)`
 --
 ALTER TABLE `state-wise rice production (in thousand tonnes)`
   MODIFY `Entry` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+
+--
+-- AUTO_INCREMENT for table `user history`
+--
+ALTER TABLE `user history`
+  MODIFY `Entry` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `Entry` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
