@@ -1,0 +1,149 @@
+<html>
+
+	<head>
+		<script type="text/javascript" src="getDataset.js"></script>
+  		<script type="text/javascript" src="login.js"></script>
+
+		<style type="text/css">
+		    .topbar{
+		      width: 100%;
+		      height: 100px;
+		      background: #9370DB;
+		      position: absolute;
+		    }
+		    .btns{
+		      margin-top: 50px;
+		      background-color: #4CAF50; /* Green */
+		      border: none;
+		      color: white;
+		      padding: 8px 16px;
+		      text-align: center;
+		      text-decoration: none;
+		      display: inline-block;
+		      font-size: 16px;
+		      font-family: impact;
+		    }
+		    #btnSignOut{
+		      margin-left: 90%;
+		      position: absolute;
+		    }
+		    #save{
+		      margin-left: 46%;
+		      position: absolute;
+		    }
+		    #load{
+		      margin-left: 53%;
+		      position: absolute;
+		    }
+		    #help{
+		      margin-left: 60%;
+		      position: absolute;
+		    }
+		    #about{
+		      margin-left: 67%;
+		      position: absolute;
+		    }
+		    #pic{
+		      width: 80px;
+		      height: 80px;
+		      margin-left: 80%;
+		      margin-top: 10px;
+		      position: absolute;
+		    }
+		    #welcome{
+		      margin-left: 20px;
+		      position: absolute;
+		      color: white;
+		      font-family: courier;
+		      font-weight: bold;
+		    }
+		    #email{
+		      margin-left: 87%;
+		      margin-top: 20px;
+		      color: white;
+		      font-family: courier;
+		    }
+		</style>
+		
+		
+
+	</head>
+
+	<body>
+		<div class="topbar">
+			<h1 id="welcome">Welcome to OGD Analytics</h1>
+			<img id="pic"/>
+			<button id="btnSignOut" onclick="signOut()" class="btns">SignOut</button>
+			<button id="save" onclick="saveUserData()" class="btns">Save</button>
+			<button id="load" onclick="loadUserData()" class="btns">Load</button>
+			<button id="about" onclick="goToAbout()" class="btns">About</button>
+			<button id="help" 	onclick="goToHelp()" class="btns">Help</button>
+			<p id="email"></p>
+		</div>
+
+		<div>
+		<h1> Help </h1>
+		<br>
+		<h3> Loading datasets </h3>
+		<p>
+			To load a dataset for prediction, do the following,
+			<ol>
+				<li>Enter the name of the dataset you want to run your prediction on and press 'Load'.</li>
+				<li>Upon doing that you can view the data and its visualisation right underneath the search bar.</li>
+				<li>In the data shown, change pages to view more of the dataset.</li>
+				<li>In the visualisation, choose from various options like
+				<ul>
+					<li>Column Chart</li>
+					<li>Area Chart</li>
+					<li>Line Chart</li>
+				</ul>
+				to view different visualisations of the data.
+				</li>
+			</ol>
+		</p>
+
+		<h3> Viewing correlations </h3>
+		<p>
+			After the data has been loaded, to view the correlations among various columns of the data,
+			<ol>
+				<li>From the given list of columns, select those whose correlations you would like to see and press 'Continue Selection'</li>
+				<li>Upon doing that an image appears that shows the correlations among the different columns selected.</li>
+			</ol>
+		</p>
+		<h3> Making predictions </h3>
+		<p>
+			To make predictions on a dataset after the aforementioned steps are complete, do the following
+			<ol>
+				<li>For every column select a radio button out of 'Input' , 'Output' and 'None'. This tells the program whether the column has to be used as input, output or not used at all.</li>
+				<li>A prediction model is trined using all the columns marked as input as database, to produce an output for all the columns marked as output</li>
+				<li>To select how many values have to be predicted, enter the following
+					<ul>
+						<li>Start - from where the value starts</li>
+						<li>Increment - steps in which the numbers for which predictions have to be made are chosen</li>
+						<li>number of values - For how many values a prediction has to be made</li>
+					</ul>
+				</li>
+				<li> For example for the given values, Start - 2010, Number of values - 10, Increment - 1, predictions are made for all the years from 2010-2019 ( both inclusive )</li>
+				<li>Upon doing that, an image appears that shows the data predicted by the code overlayed on the actual dataset.</li>
+				<li>The presictions also appear as a table beneath the image</li>
+			</ol>
+		</p>
+
+		<h3> Other features </h3>
+		<p>
+			The top of the web page has three buttons with the following functions
+			<ol>
+				<li>Save - Lets the user save their session to their account history</li>
+				<li>Load - lets the user choose from a list of previously saved sessions</li>
+				<li>Extra - lorem ipsum</li>
+			</ol>
+		</p>
+
+		</div>
+
+	</body>
+</html>
+
+
+
+

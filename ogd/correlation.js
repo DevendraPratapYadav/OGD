@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function() {
+window.onload = function() {
   var jqXHR_Data = $.ajax({
 					type: "POST",
 					url: "http://localhost:5000/getTableNames",
@@ -11,26 +11,15 @@ document.addEventListener("DOMContentLoaded", function() {
     					// console.log(data);
     					var jsData = JSON.parse(data);
     					// alert(jsData);
-    					console.log(jsData);
-    					populateDatasetList(jsData['result']);
+    					// console.log(jsData);
+    					populateDatasetList(jsData['result'], document.getElementById("search_options_1"));
+    					populateDatasetList(jsData['result'], document.getElementById("search_options_2"));	
     				}
 				});
-});
+};
 
-function goToAbout(){
-	window.location="http://localhost/ogd/about.html";
-}
-
-function goToHelp(){
-	window.location="http://localhost/ogd/help.html";
-}
-
-// window.onload = function() {
-  
-// };
-
-function loadDataset() {
-	var name = document.getElementById("dataset_name").value;
+function loadDataset1() {
+	var name = document.getElementById("dataset_name_1").value;
 
 	var dataString = name;
 
@@ -62,8 +51,8 @@ function loadDataset() {
 				}
 			});
 	*/
-		document.getElementById("loadTest").disabled = 'disabled';
-		document.getElementById("loadTest").disabled = '';
+		// document.getElementById("loadTest").disabled = 'disabled';
+		// document.getElementById("loadTest").disabled = '';
 
 		var jsObject = {"input":dataString};
 
@@ -81,7 +70,7 @@ function loadDataset() {
     					real_order_data = data;	
     					var jsData = JSON.parse(data);
     					// alert(jsData);
-						generateTableNew(jsData,real_order_data);
+						generateTableNew1(jsData,real_order_data);
     				}
 				});
 
@@ -90,11 +79,76 @@ function loadDataset() {
 	return false;
 }
 
-var raw_data_glob;
-var data_col_select_glob;
-var data_inp_param_glob;
-var data_col_names_glob;
-var data_email_glob;
+function loadDataset2() {
+	var name = document.getElementById("dataset_name_2").value;
+
+	var dataString = name;
+
+	if (name == '') {
+		alert("Please Fill Dataset Name");
+	} else {
+	/*
+			AJAX code to submit form.
+			$.ajax({
+				type: "GET",
+				url: "getDataset.php",
+				data: dataString,
+				success: function(data) {
+					alert(data);
+					var jsData = JSON.parse(data);
+					// generateTable(jsData);
+					generateTableNew(jsData);
+					var jqXHR_Data = $.ajax({
+						type: "POST",
+						url: "http://localhost:5000/loadTable",
+						async: false,
+						data: JSON.stringify({input:data}, null, '\t'),
+	    				contentType: 'application/json;charset=UTF-8',
+	    				success: function(data){
+	    					alert(data);
+	    					console.log(data);
+	    				}
+					});
+				}
+			});
+	*/
+		// document.getElementById("loadTest").disabled = 'disabled';
+		// document.getElementById("loadTest").disabled = '';
+
+		var jsObject = {"input":dataString};
+
+		var jqXHR_Data = $.ajax({
+					type: "POST",
+					url: "http://localhost:5000/loadTable",
+					async: false,
+					data: JSON.stringify(jsObject, null, '\t'),
+					crossDomain: true,
+    				contentType: 'application/json;charset=UTF-8',
+    				success: function(data){
+    					// alert(data);
+    					// console.log(data);
+    					// console.log(data);
+    					real_order_data = data;	
+    					var jsData = JSON.parse(data);
+    					// alert(jsData);
+						generateTableNew2(jsData,real_order_data);
+    				}
+				});
+
+	}
+
+	return false;
+}
+
+var raw_data_glob_1;
+var data_col_select_glob_1;
+var data_inp_param_glob_1;
+var data_col_names_glob_1;
+
+var raw_data_glob_2;
+var data_col_select_glob_2;
+var data_inp_param_glob_2;
+var data_col_names_glob_2;
 
 function getParseData(raw_data){
 
@@ -142,17 +196,15 @@ function generateTable(data){
 	$("#display_table").tabulator("setData",data);							
 }
 
-function generateTableNew(raw_data,real_order_data){
+function generateTableNew1(raw_data,real_order_data){
 
-	document.getElementById("table-content-separator").className = "visible";	
+	document.getElementById("contain-table_1").innerHTML = '<div style="background-color: #FFFFFF;border-color: #000000;padding: 20px;border-radius: 13px;box-shadow: 0px 0px 15px #888888;"><table id="example_1" class="display" ></table></div>';
 
-	document.getElementById("contain-table").innerHTML = '<div style="background-color: #FFFFFF;border-color: #000000;padding: 20px;border-radius: 13px;box-shadow: 0px 0px 15px #888888;"><table id="example" class="display" ></table></div>';
+	data_col_names_glob_1 = getParseDataColumns(raw_data);
 
-	data_col_names_glob = getParseDataColumns(raw_data);
-
-	var table = $('#example').DataTable({
+	var table = $('#example_1').DataTable({
         data: getParseData(raw_data),
-        columns: data_col_names_glob,
+        columns: data_col_names_glob_1,
         "scrollX": true
     });
 
@@ -163,6 +215,27 @@ function generateTableNew(raw_data,real_order_data){
 	gload();
 	// $.getScript('visual.js', function() { parseData(real_order_data); });
 }
+
+function generateTableNew2(raw_data,real_order_data){
+
+	document.getElementById("contain-table_2").innerHTML = '<div style="background-color: #FFFFFF;border-color: #000000;padding: 20px;border-radius: 13px;box-shadow: 0px 0px 15px #888888;"><table id="example_2" class="display" ></table></div>';
+
+	data_col_names_glob_2 = getParseDataColumns(raw_data);
+
+	var table = $('#example_2').DataTable({
+        data: getParseData(raw_data),
+        columns: data_col_names_glob_2,
+        "scrollX": true
+    });
+
+	generateForm(raw_data);
+	// console.log(raw_data);
+	// parseGData(real_order_data);
+	jsonGlob = real_order_data;
+	gload();
+	// $.getScript('visual.js', function() { parseData(real_order_data); });
+}
+
 
 function parseData(data){
 	var columns = new Array();
@@ -180,14 +253,35 @@ function parseData(data){
 	return columns;
 }
 
-function generateForm(raw_data){
+function generateForm1(raw_data){
 	raw_data_glob = raw_data;
 	if(raw_data.length==0){
 		return data;
 	}
+	document.getElementById("contain-selection").innerHTML = '<div id="div_column-selection" style="background-color: #FFFFFF;border-color: #000000;padding: 20px;border-radius: 13px;box-shadow: 0px 0px 15px #888888;"><div id="column-selection" class="container-fluid"></div></div>'
 
-	document.getElementById("ml-content-separator").className = "visible";
+	var index = 0;
 
+	var row_dom = "";
+
+	for(item in raw_data[0]){		
+		var col_name = item;
+		row_dom += '<div id="row_'+index+'" class="form-group row"><div class="col-lg-3"><strong>'+col_name+'</strong></div><div class="col-lg-9"><label class="radio-inline"><input type="radio" name="optradio_'+index+'"> Input</label><label class="radio-inline"><input type="radio" name="optradio_'+index+'" > Output</label><label class="radio-inline"><input type="radio" name="optradio_'+index+'" checked="checked"> None</label></div></div>';
+		index++;
+	}
+
+	// this.disabled=true;this.value='Submitting...';
+	var submit_button_dom = '<div id="row_'+index+'" class="form-group row"><input id = "generateForm" onclick="scrapeColSelection()" type="button" value="Continue Selection"></div>';
+	row_dom = '<form id="column-selection-form">'+row_dom+submit_button_dom+'</form>';
+
+	document.getElementById("column-selection").innerHTML = row_dom;
+}
+
+function generateForm2(raw_data){
+	raw_data_glob = raw_data;
+	if(raw_data.length==0){
+		return data;
+	}
 	document.getElementById("contain-selection").innerHTML = '<div id="div_column-selection" style="background-color: #FFFFFF;border-color: #000000;padding: 20px;border-radius: 13px;box-shadow: 0px 0px 15px #888888;"><div id="column-selection" class="container-fluid"></div></div>'
 
 	var index = 0;
@@ -306,7 +400,6 @@ function scrapeInpParameters(){
     				contentType: 'application/json;charset=UTF-8',
 					success: function(data) {
 						var img_url = "/ogd/visual.jpg";
-						console.log(img_url);
 						// document.getElementById('yourimage').src = "url/of/image.jpg?random="+new Date().getTime();
 						document.getElementById("visualizationImage").src = img_url+'?random='+new Date().getTime();
 						// alert("image should have loaded");
@@ -318,8 +411,7 @@ function scrapeInpParameters(){
 				});		
 }
 
-function populateDatasetList(search_options){
-	var ele = document.getElementById("search_options");
+function populateDatasetList(search_options,ele){
 	// alert("yes");
 
 	// var search_options = ["birthrate_statewise_1971-2012_per1000","registered_motor_vehicles_in_thousands","railwayfinancialresults_incrores","fdi_equity_in_flows_in_million_usd","annual_survey_of_datasets","riceproduction_statewise_inthousandtonnes"];
@@ -371,15 +463,15 @@ function populateResult(result){
 }
 
 function generateResultTable(row_data,col_data){
-	document.getElementById("contain-result-table").innerHTML = '<div style="background-color: #FFFFFF;border-color: #000000;padding: 20px;border-radius: 13px;box-shadow: 0px 0px 15px #888888;"><table id="resultDataTable" class="display" style="min-width: 100%;"></table></div>';
+	document.getElementById("contain-result-table").innerHTML = '<div style="background-color: #FFFFFF;border-color: #000000;padding: 20px;border-radius: 13px;box-shadow: 0px 0px 15px #888888;"><table id="resultDataTable" class="display" style="min-width: 100%"></table></div>';
 
 	console.log(row_data);
 	console.log(col_data);
 
 	var table = $('#resultDataTable').DataTable({
         data: row_data,
-        columns: col_data
-        // "scrollX": true
+        columns: col_data,
+        "scrollX": true
     });
 	console.log("complete data");
     console.log(table.rows().data().toArray());
@@ -396,11 +488,10 @@ function generateResultTable(row_data,col_data){
     console.log(arobj);
 }
 
-// this is almost the end [Snehil Ameta] [User Data save and load]
+// this is almost the end
 
 function getUserId(){
-	console.log(localStorage.getItem("email"));
-	return localStorage.getItem("email");
+
 }
 
 //saves userData into sql database
@@ -410,16 +501,13 @@ function getUserId(){
 function saveUserData()
 {
 	var userId = getUserId();
-	var datasetName = document.getElementById("dataset_name").value;
+	var datasetName = document.getElementById("dataset_name").value();
 	var ioSelection = data_col_select_glob;
 	var inputParam = data_inp_param_glob;
 	var colNames = data_col_names_glob;
 
 	var user_data = [userId, datasetName, ioSelection, inputParam, colNames];
-	var jsObject = {"input":user_data,"id":userId};
-
-	console.log("User Data Object");
-	console.log(jsObject);
+	var jsObject = {"input":user_data};
 
 	var jqXHR_Data = $.ajax({
 						type: "POST",
@@ -431,8 +519,6 @@ function saveUserData()
 						success: function(data){
 						}
 	});
-
-	alert("User Data Saved");
 }
 
 //opens a new window with user history
@@ -440,38 +526,114 @@ function loadUserData(){
 
 	var userId = getUserId();
 
-	data_email_glob = userId;
+	var f = document.createElement("form");
+	f.setAttribute('method',"post");
+	f.setAttribute('action',"history.html");
 
-	// var f = document.createElement("form");
-	// f.setAttribute('method',"post");
-	// f.setAttribute('action',"history.html");
+	var textfield = document.createElement("input");
+	textfield.type = "text";
+	textfield.name = "user_data";
+	textfield.value = userId;
 
-	// var textfield = document.createElement("input");
-	// textfield.type = "text";
-	// textfield.name = "user_data";
-	// textfield.value = userId;
+	window.open('/history.html','User History');
+	f.submit();
 
-	window.open('/ogd/history.html','User History');
-	// f.submit();
-
-	// generateUserHistoryView();
+	generateUserHistoryView();
 }
 
-// this is the end [Sakshum and Jatin] [Visualization]
+//gets user data from python service
+//TODO: implement http://localhost:5000/getUserData
+//		input: json object which has userId
+//		output: json object which is of type {"result":[datasetName, io, param, colNames]}
+function getUserDataFromServer(){
+	var userId = getUserId();
+	var user = {"input":userId};
+	var jqXHR_Data = $.ajax({
+					type: "POST",
+					url: "http://localhost:5000/getUserData",
+					data: JSON.stringify(arg, null, '\t'),
+					async: false,
+					crossDomain: true,
+    				contentType: 'application/json;charset=UTF-8',
+    				success: function(data){
+    					console.log(data);
+    				}
+				});
+
+	return jqXHR_Data;
+}
+
+//makes and returns a new div element with some default styling
+function getNewDivElement(){
+	// margin: auto;width: 80%; padding: 5px;background-color:#eeeeee;"
+	var div = document.createElement("div");
+	div.style.width = "80%";
+	div.style.margin = "auto";
+	div.style.padding = "5px";
+	div.style.background-color = "#eeeeee";
+
+	return div;
+}
+
+//generates a users history view
+//TODO: implement http://localhost:5000/runMLComponentFromHistory
+//		input: json object which has all user session data
+//		output: json object which contains predictions and its visualization image link
+function generateUserHistoryView(){
+	var userData = getUserDataFromServer();
+
+	var parentDiv = getNewDivElement();
+
+	for (var i = userData.length - 1; i >= 0; i--) {
+		var view = userData[i];
+
+		var datasetName = view[1];
+		var ioSelection = view[2];
+		var inputParam = view[3];
+		var colNames = view[4];
+
+		var para = document.createElement("p");
+		para.html += datasetName+"<br>";
+		para.html += ioSelection.toString()+"<br>";
+		para.html += inputParam.toString()+"<br>";
+		para.html += colNames.toString()+"<br>";
+
+		var button = document.createElement("input");
+    	button.setAttribute("type", "button");
+    	button.setAttribute("value", "View");
+    	button.onclick = function(arg){
+    		var jqXHR_Data = $.ajax({
+					type: "POST",
+					url: "http://localhost:5000/runMLComponentFromHistory",
+					data: JSON.stringify(arg, null, '\t'),
+					async: false,
+					crossDomain: true,
+    				contentType: 'application/json;charset=UTF-8',
+    				success: function(data){
+    					//implement display functions
+    					console.log(data);
+    				}
+				});
+    	}(userData[i]);
+
+		var div = getNewDivElement();
+		div.appendChild(para);
+		div.appendChild(button);
+
+		parentDiv.appendChild(div);
+	}
+
+	document.body.appendChild(parentDiv);
+}
+
+// this is the end
 
 function gload(){
-	document.getElementById("visual-content-separator").className = "visible";
 	document.getElementById("visual-content").className = "visible";
 	google.charts.load('current', {'packages':['corechart', 'controls']});
 	google.charts.setOnLoadCallback(decideGraphs);
 	// alert("gload called");
 	// alert(jsonGlob);
-
-	document.getElementById("corrContainer").className = "visible";
-
-	document.getElementById("mlContainer").className="visible";
-
-	generateCorrInputForm(data_col_names_glob);
 }
 
 var chart;
@@ -658,122 +820,3 @@ function drawHistoAndPie(chartType,colNumber)
 
 	chart2.draw(data,options);	
 }
-
-//this is really the end [Simarjeet] [User Login and Stuff]
-function onSignIn(googleUser) {
-	var profile = googleUser.getBasicProfile();
-	localStorage.setItem("image", profile.getImageUrl());
-	localStorage.setItem("email", profile.getEmail());
-	localStorage.setItem("name", profile.getName());
-	
-	window.location="http://localhost/ogd/index.html";
-}
-
-function signOut() {
-	alert("You have signed out sucessfully");
-	window.location="http://localhost/ogd/login.html";
-}
-
-function topbarSave() {
-	//add method
-	alert("Save here");
-}
-
-function topbarLoad() {
-	//add method
-	alert("Load here");
-	
-}
-
-function topbarExtra() {
-	//add method
-	alert("Extra here");
-}
-
-function onLoadHome() {
-	$("#pic").attr('src',localStorage.getItem("image"));
-	$("#email").text(localStorage.getItem("email"));
-	
-	updateDatabase(localStorage.getItem("name"), localStorage.getItem("email"));
-}
-
-function updateDatabase(name, email) {
-	var posting = $.post("test.php", {
-		name: name,	
-		email: email
-	});
-	
-	posting.done(function(data){
-		// alert(data);
-	});
-	
-	posting.fail(function(data){
-		// alert("DB query failed");
-	});
-}
-
-//plase stop and end this [Snehil Ameta] [Correlation]
-
-function generateCorrInputForm(colNames){
-	document.getElementById("corr-contain-selection").innerHTML = '<div style="background-color: #FFFFFF;border-color: #000000;padding: 20px;border-radius: 13px;box-shadow: 0px 0px 15px #888888;"><div id="corr-column-selection" class="container-fluid"></div></div>'
-
-	var index = 0;
-
-	var row_dom = "";
-
-	for(var i=0;i<colNames.length;i++){		
-		var col_name = colNames[i]["title"];
-		row_dom += '<div class="checkbox"><label><input type="checkbox" value="" id="row_'+i+'"><em>'+col_name+'</em></label></div>';
-	}
-
-	// this.disabled=true;this.value='Submitting...';
-	var submit_button_dom = '<div id="corr_row_'+index+'" class="form-group row"><input id = "generateCorrForm" onclick="scrapeCorrColSelection()" type="button" value="Continue Selection"></div>';
-	row_dom = '<form id="corr-column-selection-form">'+row_dom+submit_button_dom+'</form>';
-
-	document.getElementById("corr-column-selection").innerHTML = row_dom;
-}
-
-function scrapeCorrColSelection(){
-	// document.getElementById("generateForm").disabled = 'disabled';
-	// document.getElementById("generateForm").disabled = '';
-	
-	var ele = document.getElementById("corr-column-selection-form").elements;
-
-	ele = Object.values(ele);
-
-	var ip_col = [1];
-	var op_col = [];
-
-	console.log(ele);
-
-	for(var i=2;i<ele.length;i=i+1){
-		if(ele[i].checked){
-			op_col.push(i);
-		}
-		else {
-		}
-	}	
-	console.log(ip_col);
-	console.log(op_col);
-
-	var jqXHR_Data = $.ajax({
-					type: "POST",
-					url: "http://localhost:5000/runCorrComponent",
-					async: false,
-					data: JSON.stringify({"input":[ip_col,op_col]}, null, '\t'),
-    				contentType: 'application/json;charset=UTF-8',
-					success: function(data) {
-						var img_url = "/ogd/corr.png";
-						console.log(img_url);
-						// document.getElementById('yourimage').src = "url/of/image.jpg?random="+new Date().getTime();
-						document.getElementById("corrVisualizationImage").src = img_url+'?random='+new Date().getTime();
-						// alert("image should have loaded");
-						// $('#visualization').html('<img class="img-responsive"  src="'+img_url+'"/>');
-						// console.log(data.result);
-						// populateResult(data.result);
-						// alert(data.result);
-					}
-				});
-}
-
-

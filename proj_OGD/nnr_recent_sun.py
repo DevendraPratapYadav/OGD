@@ -60,65 +60,53 @@ def doSort(degree,rank):
 	rank=[x[1] for x in comb];
 	
 	degree = array(degree);
-	rank = array(rank);
+	rank = array(rank);	
 	
 	return degree,rank
 	
-# read degree,rank from file
+# read degree,rank from file    
 def load_all(filename, inCol, outCol):
 
 	degree=[]; rank=[]; freq=[];
 	doubleCols = [];
-	Labels = [];
+	
 	with open(filename) as afile:
 		r = reader(afile)
 		c=0
 		rr = [None]*2;
 		for line in r:
-			c+=1;
-			if (c==1):
-				line = ",".join(line);
-				Labels = re.split('\|', line);
-				continue;
-			if (c>3):
+			if (c>1):
 				break;
-			rr[c-2] = re.split('\|',line[0]);
+			rr[c] = re.split('\t| ',line[0]);
+			c+=1;
 			
-		
 		colType = map(float,rr[0]);
 		if (pri>1):
 			print 'colType: \n',colType;
 		
 		if (len(colType)!=len(rr[1])):
 			print 'ERROR : Column type array length not equal to data length.'
-			return [],[],[],[],[];
+			return [],[],[];
 	
 	
 	for x in xrange(0,len(colType)):
 		if (colType[x]==0):
 			doubleCols.append(x);
 	
-	for x in xrange(0,len(colType)):
-		if (colType[x]==2):
-			colType[x]= 0;
-	
 	colType = array(colType);
 	isString = colType[inCol];
-	
-	inLabels = array(Labels)[inCol];
-	outLabels = array(Labels)[outCol];
-	
-	
+
+
 	with open(filename) as afile:
 		r = reader(afile)
 		c=0
 		cRank=1;
 		for line in r:
 			c+=1;
-			if (c<3):
+			if (c<2):
 				continue;
-    
-			inp=re.split('\|',line[0]);
+            
+			inp=re.split('\t| ',line[0]);
 			
 			nullPresent = 0;
 			for x in xrange(0,len(inp)):
@@ -149,11 +137,11 @@ def load_all(filename, inCol, outCol):
 			#print ran
 			degree.append(deg);
 			rank.append(ran);
-   
+            
 	
 	#printV(zip(degree,rank));
 	
-	return degree,rank,isString,inLabels,outLabels;
+	return degree,rank,isString;
 
 def removeStrings(data,isString):
 	#data = array(data);
@@ -188,7 +176,7 @@ def addStrings(data,uniqData):
 		if (uniqData[x] == None):
 			for rr in xrange(0,len(data[:,x])):
 				ndata[rr][x] = data[rr,x];
-		else:
+		else:	
 			for rr in xrange(0,len(data[:,x])):
 				ndata[rr][x] = uniqData[x][ int(data[rr,x])];
 			
@@ -210,14 +198,14 @@ def normalizeValues(degree,scalers):
 	
 	for x in xrange(0,degree.shape[1]):
 		degree[:,x] = list(scalers[x].transform(degree[:,x].reshape(-1,1)));#scalers[x].transform(degree[:,x]);
-		
+			
 	return degree;
 	
 def deNormalizeColumns(degree,scalers):
 	
 	for x in xrange(0,degree.shape[1]):
 		degree[:,x] = list(scalers[x].inverse_transform(degree[:,x].reshape(-1,1)));#scalers[x].inverse_transform(degree[:,x]);
-		
+			
 	return degree;
 
 def deNormalizeValue(val, scalers):
@@ -226,10 +214,8 @@ def deNormalizeValue(val, scalers):
 	
 def apply_regression(filename, inCol, outCol, predValues):
 	# read input output columns from filename
-	degree,rank,isString,inLabels,outLabels = load_all(filename, inCol, outCol);
+	degree,rank,isString = load_all(filename, inCol, outCol);
 
-	print 'Labels: ',inLabels,'\n', outLabels;
-	
 	printV(zip(degree,rank))
 	#TODO : check that output column can't be string
 	
@@ -253,7 +239,7 @@ def apply_regression(filename, inCol, outCol, predValues):
 	
 	
 	degree,Dscalers = normalizeColumns(degree);
-	#print degree;
+	print degree;
 	rank,Rscalers = normalizeColumns(rank);
 	
 	#printV(zip(degree,rank));
@@ -367,20 +353,20 @@ def apply_regression(filename, inCol, outCol, predValues):
 		
 		#create multioutput regressor
 		svr = MultiOutputRegressor(mysvr);
-		
+					
 		# train NN regression model
-		
+		  
 		svr.fit(trI,trL);
 		
 		
 		# test model to get accuracy
 		
 		res = svr.score(teI,teL);
-		# 'res' represents how well regression model is learned.
-		# It is defined as (1 - u/v), where u is the residual sum of squares ((y_true - y_pred) ** 2).sum()
+		# 'res' represents how well regression model is learned. 
+		# It is defined as (1 - u/v), where u is the residual sum of squares ((y_true - y_pred) ** 2).sum() 
 		# and v is the total sum of squares ((y_true - y_true.mean()) ** 2).sum()
 		
-		if (pri>0):
+		if (pri>0):	
 			print 'Accuracy measure: ', res
 			
 		# predict label/rank for test instances/degrees for calculating error
@@ -391,7 +377,7 @@ def apply_regression(filename, inCol, outCol, predValues):
 		wsum=0;
 		if (pri>2):
 			print 'Predicted','\t','Actual Rank'
-			
+				
 		linSum = 0;
 		"""
 		# calculate deviation from true vaue for each test instance
@@ -401,18 +387,18 @@ def apply_regression(filename, inCol, outCol, predValues):
 			trank =  (e[1]*MaxRank) # true rank
 			
 			sum+=abs(prank-trank)
-			
+						
 			lrank =0 ;
-			
+						
 			if (pri>2):
 				print int(prank),"\t", trank, '\t',e[2],'\t',lrank
 			
-		if (pri>2):
-			print 'Avg error: ',(sum/len(yres))
+		if (pri>2):	
+			print 'Avg error: ',(sum/len(yres))    
 		
-		AvgErr+=(sum/len(yres))
+		AvgErr+=(sum/len(yres)) 
 		AvgWerr+=(wsum/len(yres))
-	if (pri>2):
+	if (pri>2):	
 		print 'Avg error: ',(AvgErr/runs)
 	"""
 	
@@ -446,40 +432,23 @@ def apply_regression(filename, inCol, outCol, predValues):
 	#printV(zip(pv,Pred));
 	#printV(zip(teI,teL));
 	
-	# show plot of predicted rank(dotted line) and actual rank (continuous line).
+	# show plot of predicted rank(dotted line) and actual rank (continuous line). 
 	# NOTE : x-axis is degree. Both degree(x-axis) and rank(y-axis) are on log scale and normalized
 	
 	#z=array(sorted(zip(teL,yres,teI[:,0])));
 	#plt.plot(z[:,2],z[:,1],'x',ms=3)
 	#plt.plot(z[:,2],z[:,0],'-',ms=2)
 	plt.clf();
+	plt.plot(trI[:,0],trL,'x',ms=2)
 	
+	plt.plot(teI[:,0],teL,'x',ms=3)
 	
-	zz = (sorted(zip(trI[:,0],trL)));
-	Xd = [x[0] for x in zz];
-	Yd = [x[1] for x in zz];
+	plt.plot(pv,Pred,'o',ms=5)
 	
-	plt.plot(Xd,Yd,'s-',ms=2)
-	
-	plt.gca().set_prop_cycle(None)
-	#plt.plot(teI[:,0],teL,'x',ms=3)
-	
-	plt.plot(array(pv)[:,0],Pred,'o-',ms=5)
-	
-	plt.gca().set_prop_cycle(None)
-	
-	for i in xrange(0,Pred.shape[1]):
-		plt.plot(Xd[0], Yd[0][0], 'o-', label=outLabels[i])
-	
-	plt.legend(loc='upper left')
-	plt.xlabel(inLabels[0])
+	#plt.xlabel('Year')
 	#plt.ylabel('Mortality Rate')
-	# plt.show()
+	#plt.show()
 	savefig('C:\\xampp1\\htdocs\\ogd\\visual.jpg');
-	
-	limitPrecision = vectorize(lambda x:float("{0:.2f}".format(x)))
-	
-	Pred = limitPrecision(Pred);
 	
 	pv = pv.tolist();
 	Pred = Pred.tolist();
@@ -493,5 +462,5 @@ def apply_regression(filename, inCol, outCol, predValues):
 	# print result;
 	return result;
 
-#Pr = apply_regression('data.txt',[1],[3,4,5,6,7,8,9,10],[[0,2010,20,1]]);
+# Pr = apply_regression('data.txt',[1],[3,4,5],[[0,2000,20,1]]);
 # printV (Pr);
