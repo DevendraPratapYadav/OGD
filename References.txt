@@ -1,0 +1,7 @@
+During the developement of this project following sources were referred:
+
+1. Flask.py documentation
+2. Datatables.js Documentation
+3. Bootstrap Documentation
+4. Stackoverflow (for resolving issues while devloping, like CORS error encountered while making requests across client-side JS and Flask service at backend etc.)
+5. Standard HTML, CSS, JS, Python Documentation

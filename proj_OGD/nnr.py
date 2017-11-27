@@ -471,11 +471,15 @@ def apply_regression(filename, inCol, outCol, predValues):
 	for i in xrange(0,Pred.shape[1]):
 		plt.plot(Xd[0], Yd[0][0], 'o-', label=outLabels[i])
 	
+	
+	plt.plot(Xd[0], Yd[0][0], '', label='Accuracy:'+(str(max(0,99*float("{0:.2f}".format(res))) )  )+'%')
+	
+	
 	plt.legend(loc='upper left')
 	plt.xlabel(inLabels[0])
 	#plt.ylabel('Mortality Rate')
 	# plt.show()
-	savefig('C:\\xampp1\\htdocs\\ogd\\visual.jpg');
+	savefig('D:\\xampp\\htdocs\\ogd\\visual.jpg');
 	
 	limitPrecision = vectorize(lambda x:float("{0:.2f}".format(x)))
 	
@@ -493,5 +497,5 @@ def apply_regression(filename, inCol, outCol, predValues):
 	# print result;
 	return result;
 
-#Pr = apply_regression('data.txt',[1],[3,4,5,6,7,8,9,10],[[0,2010,20,1]]);
+#Pr = apply_regression('data.txt',[1],[3,4,5],[[0,2010,20,1]]);
 # printV (Pr);

@@ -136,10 +136,12 @@ def findCorrelation(filename, input, output):
 	
 	input = transpose(array(input));
 	
-	# print shape(input);
+	print 'Input:',input.shape;
 	
 	Corr = corrcoef(input);
-	
+	if (len(Corr.shape)==0):
+		Corr=array([1]).reshape(1,1);
+	print 'Corr Shape:', len(Corr.shape); 
 	NumCols = Corr.shape[0];
 	
 	"""
@@ -187,7 +189,7 @@ def findCorrelation(filename, input, output):
 	
 	cbar = fig.colorbar(cax, ax=ax1, orientation=u'vertical')
 	
-	plt.savefig('C:\\xampp1\\htdocs\\ogd\\corr.png', dpi=100, bbox_inches="tight");
+	plt.savefig('D:\\xampp\\htdocs\\ogd\\corr.png', dpi=100, bbox_inches="tight");
 	# plt.show();
 	return Corr;
 
