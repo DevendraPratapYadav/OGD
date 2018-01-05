@@ -3,6 +3,8 @@ Software Engineering Course Project [CSL456]
 
 ## Project Documentation : [Software Requirements Specification](https://github.com/DevendraPratapYadav/OGD/blob/master/Documentation/Software%20Requirements%20Specification.pdf)
 
+## Project Demo Snapshots : [HERE](https://devendrapratapyadav.github.io/OGD/)
+
 Members:
 * Devendra Pratap Yadav   [2014csb1010]
 * Snehil Ameta            [2014csb1035]
@@ -32,3 +34,4 @@ Major Features
 	User History
 
 -----------------------------------------------------------------------------------------
+The features are shown in the project demo snapshots link given at top.
